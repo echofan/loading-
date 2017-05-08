@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../jquery.min.js"></script>
+    <link rel="stylesheet" type="" href="index.css">
+</head>
+<body>
+        <div id="menu">
+    <ul>
+        <li>1F <span>服饰</span> </li>
+        <li>2F <span>美妆</span> </li>
+        <li>3F <span>手机</span> </li>
+        <li>4F <span>家电</span> </li>
+        <li>5F <span>数码</span> </li>
+        <li>6F <span>运动</span> </li>
+        <li>7F <span>居家</span> </li>
+        <li>8F <span>母婴</span> </li>
+        <li>9F <span>食品</span> </li>
+        <li>10F <span>图书</span> </li>
+        <li>11F <span>服务</span> </li>
+        <li class="last">Top</li>
+    </ul>
+</div>
+
+<!--楼层内容开始-->
+<div id="header">头部</div>
+<div id="main">
+    <div class="Louti" style="background: #FF0000;">服饰</div>
+    <div class="Louti" style="background: #FF7F00;">美妆</div>
+    <div class="Louti" style="background: #FFFF00;">手机</div>
+    <div class="Louti" style="background: #00FF00;">家电</div>
+    <div class="Louti" style="background: #00FFFF;">数码</div>
+    <div class="Louti" style="background: #0000FF;">运动</div>
+    <div class="Louti" style="background: #8B00FF;">居家</div>
+    <div class="Louti" style="background: aquamarine;">母婴</div>
+    <div class="Louti" style="background: pink;">食品</div>
+    <div class="Louti" style="background: bisque;">图书</div>
+    <div class="Louti" style="background: lightgoldenrodyellow;">服务</div>
+</div>
+<div id="footer">尾部</div>
+<!--楼层内容结束-->
+<script>
+     var flag=true;
+     //除了最后一层、给每个楼梯号添加click
+     $("#menu li:not(:last)").click(function(){
+           flag=false;
+           //点击楼梯为红色，其他的为黑色
+           $(this).find('span').addClass('active').end().siblings().find('span').removeClass('active');
+           //获取当前楼梯对应的top值
+           var sTop=$('.Louti').eq($(this).index()).offset().top;
+           console.log(sTop);
+           //将页面滚走的高度为sTOp
+           $('html,body').animate({
+                'scrollTop':sTop
+           },1000,function(){
+               flag=true;
+           })
+     });
+     //点击top回到顶部
+     $(".last").click(function(){
+             $('html,body').animate({
+                'scrollTop':0
+           },500,function(){
+               flag=true;
+           }) 
+           $('#menu li sapn').removeClass('active');
+     });
+     //滚动鼠标监听楼梯
+     $(window).scroll(function(){
+        //如果可以滚动
+        if(flag){
+             //获取页面滚动的距离
+             var sTop=$(document).scrollTop();
+             //通过filter来知道满足条件的元素
+             var $floor=$('.Louti').filter(function(index,ele){
+                    return Math.abs($(this).offset().top-sTop)<$(this).height()/2;
+             });
+             //根据楼梯的索引 设置楼梯号的样式
+             $('#menu li').eq($floor.index()).find('span').addClass('active').parent().siblings().find('span').removeClass('active');
+        }
+     });
+</script>
+</body>
+</html>
